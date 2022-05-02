@@ -5,8 +5,12 @@ const PDFViewer = dynamic(
   //@ts-ignore
   import("@react-pdf/renderer").then((module) => module.PDFViewer),
   {
-    loading: ({ error, isLoading, pastDelay, retry }) => {
-      return <div>{isLoading ? "true" : "false"}</div>;
+    loading: ({ error }) => {
+      if (error) {
+        console.error(error, "document");
+        return <div>Error!PDFViewer</div>;
+      }
+      return <div>Loading PDFViewer</div>;
     },
     ssr: false,
   }
