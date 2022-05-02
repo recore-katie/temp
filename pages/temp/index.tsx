@@ -1,6 +1,17 @@
 import React from "react";
 import dynamic from "next/dynamic";
 
+const PDFViewer = dynamic(
+  //@ts-ignore
+  import("@react-pdf/renderer").then((module) => module.PDFViewer),
+  {
+    loading: ({ error, isLoading, pastDelay, retry }) => {
+      return <div>{isLoading ? "true" : "false"}</div>;
+    },
+    ssr: false,
+  }
+);
+
 const Document = dynamic(
   //@ts-ignore
   import("@react-pdf/renderer").then((module) => module.Document),
@@ -63,17 +74,19 @@ const View = dynamic(
 
 export default function TempDocument() {
   return (
-    <Document>
-      <Page
-        //@ts-ignore
-        wrap={false}
-        break
-        size={[80, 60]}
-      >
-        <View>
-          <Text>Please display</Text>
-        </View>
-      </Page>
-    </Document>
+    <PDFViewer>
+      <Document>
+        <Page
+          //@ts-ignore
+          wrap={false}
+          break
+          size={[80, 60]}
+        >
+          <View>
+            <Text>Please display</Text>
+          </View>
+        </Page>
+      </Document>
+    </PDFViewer>
   );
 }
